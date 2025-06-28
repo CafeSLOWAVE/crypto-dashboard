@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>암호화폐 대시보드</title>
+    <style>
+        body {
+            background: #1a1a2e;
+            color: white;
+            font-family: Arial;
+            padding: 20px;
+        }
+        .price-box {
+            background: #16213e;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .price {
+            font-size: 2em;
+            color: #00ff88;
+        }
+        button {
+            background: #0099ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 실시간 암호화폐 가격</h1>
+    
+    <div class="price-box">
+        <h2>BTC/USDT</h2>
+        <div class="price" id="btcPrice">로딩중...</div>
+        <div id="btcChange">-</div>
+    </div>
+    
+    <button onclick="fetchPrice()">가격 새로고침</button>
+    
+    <script>
+        // Vercel 배포 후 여기에 실제 URL 입력
+        const API_URL = 'https://YOUR-PROJECT.vercel.app';
+        
+        async function fetchPrice() {
+            try {
+                // 로컬 테스트용
+                const response = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
+                const data = await response.json();
+                
+                document.getElementById('btcPrice').textContent = '$' + parseFloat(data.lastPrice).toLocaleString();
+                document.getElementById('btcChange').textContent = 
+                    '24시간 변동: ' + data.priceChangePercent + '%';
+                document.getElementById('btcChange').style.color = 
+                    data.priceChangePercent > 0 ? '#00ff88' : '#ff4757';
+                    
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('btcPrice').textContent = '에러 발생';
+            }
+        }
+        
+        // 페이지 로드시 실행
+        fetchPrice();
+        
+        // 5초마다 자동 새로고침
+        setInterval(fetchPrice, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/binance-proxy.js": {
+      "maxDuration": 10
+    }
+  }
+}
